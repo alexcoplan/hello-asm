@@ -10,17 +10,17 @@ from typing import Dict, List, TextIO, Tuple
 
 import artefacts # user's build definitions
 
-base_flags  = "-g -Wall -Wextra -Wpedantic -Werror -fdiagnostics-color"
+base_flags  = "-g -Wall -Wextra -Wpedantic -Werror -fcolor-diagnostics"
 base_flags += " -Wno-error=unused-parameter -Wno-error=unused-function"
-base_flags += " -Wno-gnu-zero-variadic-macro-arguments"
+base_flags += " -Wno-gnu-zero-variadic-macro-arguments -I. -Iinclude"
 
 cflags = "$baseflags -std=c11"
 cxxflags = "$baseflags -std=c++11"
 
 ninja_vars = {
   "builddir" : "build",
-  "cc" : "gcc",
-  "cxx" : "g++",
+  "cc" : "clang",
+  "cxx" : "clang++",
   "baseflags" : base_flags,
   "cflags" : cflags,
   "cxxflags" : cxxflags,
@@ -137,6 +137,9 @@ class BuildEnv:
   def IsLinux(self) -> bool:
     return platform.system() == 'Linux'
 
+  def TargetIsArm(self) -> bool:
+    return platform.machine().startswith('arm')
+
   def Program(self, name : str, src : List[str], ldflags : str = "") -> None:
     objects = []
     for f in src:
@@ -172,7 +175,7 @@ class BuildEnv:
     reconf_cmd = "./configure.py"
     if len(sys.argv) > 1:
       conf_args = " ".join(sys.argv[1:])
-      reconf_cmd += f" {confg_args}"
+      reconf_cmd += f" {conf_args}"
 
     fp.write("rule reconf\n")
     fp.write(f"  command = {reconf_cmd}\n")

@@ -1,3 +1,7 @@
+#include "ajc_c.h"
+
+#include <limits.h>
+
 bool ajc_atoi_c(const char *str, int *result)
 {
   const unsigned neg = (*str == '-');
@@ -21,9 +25,9 @@ bool ajc_atoi_c(const char *str, int *result)
       return false; // Overflow
 
     acc *= 10;
-    acc += (str - '0');
+    acc += (*str - '0');
   }
 
-  *result = (neg * -1) * acc;
+  *result = neg ? -acc : acc;
   return true;
 }
