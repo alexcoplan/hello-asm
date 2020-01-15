@@ -41,7 +41,7 @@ ajc_atoi:
   cmp %r2, $'0
   bne atoi_loop
   cmp %r3, #0
-  beq atoi_fail // leading zero only valid if it's the only digit
+  bne atoi_fail // leading zero only valid if it's the only digit
 atoi_loop:
   ldrb %r2, [%r0]
   cmp %r2, #0
