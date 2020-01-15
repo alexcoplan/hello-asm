@@ -169,12 +169,17 @@ class BuildEnv:
 
     fp.write(ninjafile_base)
 
-    conf_args = " ".join(sys.argv[1:])
+    reconf_cmd = "./configure.py"
+    if len(sys.argv) > 1:
+      conf_args = " ".join(sys.argv[1:])
+      reconf_cmd += f" {confg_args}"
+
     fp.write("rule reconf\n")
-    fp.write(f"  command = ./configure.py {conf_args}\n")
+    fp.write(f"  command = {reconf_cmd}\n")
+    fp.write(f"  generator = 1\n")
 
     fp.write("\n# re-configure if necessary\n")
-    fp.write("build build.ninja : reconf\n")
+    fp.write("build build.ninja : reconf configure.py artefacts.py\n")
 
     fp.write("\n# objects\n")
     for obj in self.obj_map.values():
