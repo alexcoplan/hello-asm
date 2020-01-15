@@ -131,6 +131,9 @@ class BuildEnv:
     # maps object file names -> ObjectFile objects
     self.obj_map : Dict[str, ObjectFile] = {}
 
+  def HaveSanitizers(self) -> bool:
+    return self.san_info.mask != 0
+
   def IsWindows(self) -> bool:
     return os.name == 'nt'
 
