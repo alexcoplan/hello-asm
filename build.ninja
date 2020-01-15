@@ -1,0 +1,30 @@
+builddir = build
+raw_cflags = -static -nostdlib -Wl,--build-id=none -fno-asynchronous-unwind-tables -O3
+cc = gcc
+as = as
+
+rule cc
+  command = $cc -c -o $out $in
+
+rule as
+  command = $as -o $out $in
+
+rule link
+  command = $cc -o $out $in
+
+rule cclink
+  command = $cc $raw_cflags -o $out $in
+
+rule strip
+  command = strip -R .comment -o $out $in
+
+build $builddir/ret0_c : cclink linux/x64/ret0.c
+build $builddir/ret1_c : cclink linux/x64/ret1.c
+build $builddir/empty_c : cclink linux/x64/empty.c
+
+build $builddir/ret0_asm.o : as linux/x64/ret0.s
+build $builddir/ret0_asm : cclink $builddir/ret0_asm.o
+
+build $builddir/add_asm.o : as linux/x64/add.s
+build $builddir/add_c.o : cc linux/x64/add.c
+build $builddir/add : link $builddir/add_asm.o $builddir/add_c.o
