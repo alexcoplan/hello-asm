@@ -14,5 +14,9 @@ int main(void)
   len = ajc_strlen(str);
   printf("%s is %zu bytes long\n", str, len);
 
+  const char *seven = "7";
+  int ret;
+  unsigned ok = ajc_atoi(seven, &ret);
+  printf("%s -> (ok=%u, ret=%d)\n", seven, ok, ret);
   return 0;
 }
