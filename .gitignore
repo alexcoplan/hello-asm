@@ -1,2 +1,4 @@
 *.swp
 build
+build.ninja
+__pycache__
