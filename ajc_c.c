@@ -1,6 +1,7 @@
 #include "ajc_c.h"
 
 #include <limits.h>
+#include <stdarg.h>
 
 bool ajc_atoi_c(const char *str, int *result)
 {
@@ -30,4 +31,21 @@ bool ajc_atoi_c(const char *str, int *result)
 
   *result = neg ? -acc : acc;
   return true;
+}
+
+unsigned ajc_add_vargs_c(unsigned n, ...)
+{
+  va_list ap;
+  unsigned tmp, total;
+
+  total = 0;
+
+  va_start(ap, n);
+  for (unsigned i = 0; i < n; i++) {
+    tmp = va_arg(ap, unsigned);
+    total += tmp;
+  }
+  va_end(ap);
+
+  return total;
 }

@@ -1,6 +1,7 @@
 def describe(env):
   env.FuzzTarget('fuzz_atoi', ['fuzz_atoi.c', 'ajc_c.c'])
   env.Test('test_atoi', ['test/test_atoi.c', 'ajc_c.c'])
+  env.Test('test_vargs', ['test/test_vargs.c', 'ajc_c.c'])
 
   if env.TargetIsArm():
     env.Test('test_atoi_asm', ['test/test_atoi_asm.c', 'arm/ajc_lib.s'])
